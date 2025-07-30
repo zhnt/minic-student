@@ -1,0 +1,21 @@
+# 构建产物
+build/
+*.o
+*.a
+*.so
+minic
+
+# 临时文件
+*.tmp
+*.log
+.DS_Store
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 调试文件
+core
+gmon.out
