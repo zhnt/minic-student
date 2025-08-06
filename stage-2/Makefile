@@ -48,6 +48,8 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) | $(BUILD_DIR)
 # 清理构建文件
  clean:
 	@rm -rf $(BUILD_DIR) $(TARGET)
+	rm minic
+	rm minic-clean
 	@echo "🧹 清理完成"
 
 # 完整清理（包括所有临时文件）
