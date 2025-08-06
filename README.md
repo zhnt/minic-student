@@ -14,13 +14,14 @@ cd minic-student
 git tag -l stage-*
 
 # 老师宣布后切换到当前阶段
+git fetch origin      # 获取最新标签
 git checkout stage-0  # 阶段0：加法计算器
 
 # 立即体验
 cd stage-0
 make
-echo "3 + 5" | ./build/minic        # 8.00
-echo "x = 10 + 5; x" | ./build/minic  # 15.00
+echo "3 + 5" | ./minic        # 8.00
+echo "x = 10 + 5; x" | ./minic  # 15.00
 ```
 
 ## 📋 12阶段学习路径
@@ -47,8 +48,9 @@ echo "x = 10 + 5; x" | ./build/minic  # 15.00
 1. **一次性克隆**：`git clone https://github.com/zhnt/minic-student.git`
 2. **查看可用阶段**：`git tag -l stage-*`
 3. **老师宣布解锁**："同学们，阶段N已解锁！"
-4. **切换阶段**：`git checkout stage-N`
-5. **开始学习**：`cd stage-N && make && ./build/minic`
+4. **获取最新阶段**：`git fetch origin`
+5. **切换阶段**：`git checkout stage-N`
+6. **开始学习**：`cd stage-N && make && ./build/minic`
 
 ### 教师控制流程：
 - **准备阶段**：完善阶段代码
@@ -75,7 +77,7 @@ echo "3 + 5" | ./build/minic        # 8.00 ✨
 ### 第2天：阶段1解锁
 ```bash
 # 老师宣布："阶段1已解锁！"
-git pull origin main  # 获取新标签
+git fetch origin      # 获取新标签
 git checkout stage-1
 cd stage-1
 make
@@ -124,7 +126,7 @@ echo "10 + 20" | ./build/minic -vt  # 观察token
 ```bash
 # 30秒内开始
 1. git clone https://github.com/zhnt/minic-student.git
-2. cd minic-student && git checkout stage-0
+2. cd minic-student && git fetch origin && git checkout stage-0
 3. cd stage-0 && make && echo "3 + 5" | ./build/minic
 ```
 

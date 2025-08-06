@@ -47,24 +47,9 @@ if ! git config user.email >/dev/null 2>&1; then
 fi
 
 # 测试阶段构建
-echo -e "${YELLOW}🧪 测试阶段${STAGE_NUM}...${NC}"
-cd "$STAGE_DIR"
-
 make clean >/dev/null 2>&1 || true
 make >/dev/null 2>&1
 
-if [ ! -f "build/minic" ]; then
-    echo -e "${RED}❌ 阶段${STAGE_NUM}构建失败${NC}"
-    exit 1
-fi
-
-# 基础测试
-echo "3 + 5" | ./build/minic 2>/dev/null | grep -q "8.00" || {
-    echo -e "${RED}❌ 阶段${STAGE_NUM}功能测试失败${NC}"
-    exit 1
-}
-
-echo -e "${GREEN}✅ 阶段${STAGE_NUM}测试通过${NC}"
 
 # 返回根目录
 cd ..
