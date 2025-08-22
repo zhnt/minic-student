@@ -1,0 +1,115 @@
+# 🎯 阶段3：变量系统开发 Makefile
+# 学生作业专用 Makefile
+
+# 基础配置
+CC := gcc
+CFLAGS := -Wall -Wextra -std=c99 -g
+LDFLAGS := -lm
+
+# 阶段目录
+STAGES := src30 src34
+STUDENT_DIR := my_solution
+
+# 学生作业支持
+.PHONY: all help clean student-init student-test stage-test validate
+
+# 默认帮助
+all: help
+
+# 🎯 学生作业初始化
+student-init:
+	@echo "🚀 初始化学生作业环境..."
+	@if [ ! -d "$(STUDENT_DIR)" ]; then \
+		cp -r src30 $(STUDENT_DIR); \
+		echo "✅ 已将基础代码复制到 $(STUDENT_DIR)/"; \
+	else \
+		echo "⚠️  $(STUDENT_DIR)/ 已存在，跳过初始化"; \
+	fi
+	@echo ""
+	@echo "📋 下一步操作："
+	@echo "  cd $(STUDENT_DIR)"
+	@echo "  make help"
+
+# 🔍 学生作业测试
+student-test:
+	@if [ ! -d "$(STUDENT_DIR)" ]; then \
+		echo "❌ 请先运行 'make student-init' 初始化作业环境"; \
+		exit 1; \
+	fi
+	@cd $(STUDENT_DIR) && make student-test
+
+# 📊 阶段对比测试
+stage-test:
+	@echo "📊 阶段功能对比测试"
+	@echo "===================="
+	@echo ""
+	@echo "📋 基础功能测试："
+	@cd src30 && make clean && make >/dev/null 2>&1
+	@echo "src30 基础表达式：" `echo "5+3*2" | src30/minic | tail -1`
+	@echo "src30 一元运算：" `echo "-5+3" | src30/minic | tail -1`
+	@echo "src30 多语句：" `echo "1+2;3*4;5-1" | src30/minic | tail -1`
+	@echo ""
+	@echo "🎯 完整功能测试："
+	@cd src34 && make clean && make >/dev/null 2>&1
+	@echo "src34 变量赋值：" `echo "x=5" | src34/minic | tail -1`
+	@echo "src34 变量使用：" `echo "x=5;x+3" | src34/minic | tail -1`
+	@echo "src34 多变量：" `echo "a=10;b=20;a+b" | src34/minic | tail -1`
+
+# ✅ 验证学生作业
+validate: student-init
+	@echo "🔍 验证学生作业实现..."
+	@cd $(STUDENT_DIR) && make clean && make >/dev/null 2>&1
+	@echo ""
+	@echo "🧪 基础功能验证："
+	@cd $(STUDENT_DIR) && echo "5+3*2" | ./minic | grep -q "11.00" && echo "✅ 基础表达式正常" || echo "❌ 基础表达式异常"
+	@cd $(STUDENT_DIR) && echo "-5+3" | ./minic | grep -q "-2.00" && echo "✅ 一元运算正常" || echo "❌ 一元运算异常"
+	@echo ""
+	@echo "🎯 变量功能验证："
+	@cd $(STUDENT_DIR) && (echo "x=5" | ./minic | tail -1 | grep -q "5.00" && echo "✅ 变量赋值正常" || echo "❌ 变量赋值异常")
+	@cd $(STUDENT_DIR) && (echo "x=5;x+3" | ./minic | tail -1 | grep -q "8.00" && echo "✅ 变量使用正常" || echo "❌ 变量使用异常")
+
+# 🧹 全面清理
+clean:
+	@echo "🧹 清理所有构建文件..."
+	@for dir in $(STAGES); do \
+		if [ -d "$$dir" ]; then \
+			echo "  清理 $$dir/"; \
+			cd "$$dir" && make clean 2>/dev/null || true; \
+		fi; \
+	done
+	@if [ -d "$(STUDENT_DIR)" ]; then \
+		echo "  清理 $(STUDENT_DIR)/"; \
+		cd $(STUDENT_DIR) && make clean 2>/dev/null || true; \
+	fi
+	@echo "✅ 清理完成"
+
+# 📖 帮助信息
+help:
+	@echo "🎯 阶段3：变量系统作业指南"
+	@echo "================================"
+	@echo ""
+	@echo "📚 学生作业命令："
+	@echo "  make student-init   - 初始化学生作业环境"
+	@echo "  make student-test   - 测试学生作业实现"
+	@echo "  make validate       - 全面验证学生作业"
+	@echo ""
+	@echo "🔍 功能对比："
+	@echo "  make stage-test     - 对比src30和src34功能"
+	@echo "  make clean          - 清理所有构建文件"
+	@echo ""
+	@echo "📂 目录说明："
+	@echo "  src30/    - 学生起点（无变量功能）"
+	@echo "  src34/    - 完整实现（参考答案）"
+	@echo "  my_solution/ - 学生作业目录"
+	@echo ""
+	@echo "🚀 快速开始："
+	@echo "  1. make student-init    # 初始化作业环境"
+	@echo "  2. cd my_solution       # 进入作业目录"
+	@echo "  3. make help            # 查看学生专用帮助"
+	@echo "  4. make student-test    # 测试完成作业"
+
+# 🔄 快速开发循环
+dev-cycle: clean student-init
+	@echo "🔄 开发循环已启动"
+	@echo "进入 $(STUDENT_DIR)/ 开始开发吧！"
+	@cd $(STUDENT_DIR) && echo "学生作业目录已准备就绪"
